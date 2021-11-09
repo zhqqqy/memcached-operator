@@ -63,7 +63,18 @@ type Memcached struct {
 
 修改* _types.go文件后，始终运行以下命令以更新该资源类型的生成代码：`make generate`
 
-以上makefile 会调用 [controller-gen](https://sigs.k8s.io/controller-tools) 工具来更新api/v1alpha1/zz_generated.deepcopy.go文件，以确保api的Go类型定义实现了所有Kind类型必须实现的`runtime.Object`接口。
+以上makefile 会调用 [controller-gen](https://sigs.k8s.io/controller-tools) 工具来更新 `api/v1alpha1/zz_generated.deepcopy.go` 文件，以确保api的Go类型定义实现了所有Kind类型必须实现的`runtime.Object`接口。
+```go
+func (in *MemcachedStatus) DeepCopyInto(out *MemcachedStatus) {
+	*out = *in
+	if in.Nodes != nil {
+		in, out := &in.Nodes, &out.Nodes
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
+}
+```
+会在这个函数中新增对应的字段代码
 
 ### Manifest
 
