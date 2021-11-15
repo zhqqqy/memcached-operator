@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"context"
-	"github.com/prometheus/common/log"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -40,7 +39,7 @@ type MemcachedReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.10.0/pkg/reconcile
 // 它每次在被监视的CR或资源上发生事件时运行，并根据这些状态是否匹配返回一些值。
 func (r *MemcachedReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = ctrllog.FromContext(ctx)
+	log := ctrllog.FromContext(ctx)
 	// my logic here
 	// 查找此 Reconcile request的Memcached实例
 	memcached := &cachev1alpha1.Memcached{}
