@@ -19,6 +19,7 @@ package main
 import (
 	"flag"
 	"os"
+
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -63,7 +64,7 @@ func main() {
 	flag.Parse()
 
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
-	//`ctrl.Options` 管理器可以限制所有控制器监视资源的 namespace.  要监视所有namespace请保留namespace为空的话
+
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme:                 scheme,
 		MetricsBindAddress:     metricsAddr,
@@ -84,11 +85,6 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Memcached")
 		os.Exit(1)
 	}
-	//
-	//if err = (&cachev1alpha1.Memcached{}).SetupWebhookWithManager(mgr); err != nil {
-	//	setupLog.Error(err, "unable to create webhook", "webhook", "Memcached")
-	//	os.Exit(1)
-	//}
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
